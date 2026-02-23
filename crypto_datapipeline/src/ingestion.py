@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 import os
 
-#Make it a function to call it later on main.py
+#Make it a function to call it later on main.py it is a demo
 def ingest(top=10):
 #API gecko
     url = "https://api.coingecko.com/api/v3/coins/markets"
@@ -31,3 +31,28 @@ def ingest(top=10):
         print(filename)
 
         return filename
+    
+
+def ingest_top10(LastDays=30):
+
+    url = "https://api.coingecko.com/api/v3/coins/markets"
+
+    params = {"vs_currency": "usd", "days": LastDays, "interval": "daily"}
+
+    response = requests.get(url,params)
+    data = response.json()
+
+    PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    RAW_FOLDER = os.path.join(PROJECT_ROOT, "data", "raw")
+    filename = os.path.join(RAW_FOLDER, f"markets_last{LastDays}.json")
+    
+    with open(filename, "w") as f:
+        json.dump(data, f, indent=2)
+
+        print(filename)
+
+        return filename
+    
+
+
+
