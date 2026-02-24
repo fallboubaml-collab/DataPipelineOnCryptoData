@@ -17,6 +17,7 @@ def loading_in_pd(day):
     return df
 
 
+
 def preprocessing_dataframe():
 
     df = loading_in_pd('markets_2026-02-23.json')
@@ -29,5 +30,24 @@ def preprocessing_dataframe():
     #save in a csv
     df.to_csv("data/processed/{time_frame}", index=False)
 
- 
+
+def loading_coins_pd(coins="bitcoin",lastdays=30):
+
+    #Load raw JSON
+    with open(f"data/raw/{coins}last{lastdays}days.json") as f:
+        data = json.load(f)
+    #transform to Dataframe
+    df = pd.DataFrame(data)
+
+    # Keep relevant columns
+    df = df[['id','symbol','name','current_price','market_cap','total_volume','price_change_percentage_24h']]
+
+    return {
+        "data": df,
+        "coin": coins,
+        "days": lastdays
+    }
+
+
+
 

@@ -32,26 +32,43 @@ def ingest(top=10):
 
         return filename
     
+def ingest_coins_lastdays(coins: list, last_days: int = 30):
 
-def ingest_top10(LastDays=30):
-
-    url = "https://api.coingecko.com/api/v3/coins/markets"
-
-    params = {"vs_currency": "usd", "days": LastDays, "interval": "daily"}
-
-    response = requests.get(url,params)
-    data = response.json()
-
+    # Project root
     PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    RAW_FOLDER = os.path.join(PROJECT_ROOT, "data", "raw")
-    filename = os.path.join(RAW_FOLDER, f"markets_last{LastDays}.json")
-    
-    with open(filename, "w") as f:
-        json.dump(data, f, indent=2)
+    RAW_FOLDER =  os.path.join(PROJECT_ROOT, "data", "raw")
 
-        print(filename)
+    #loot in all coin 
+    for coin in coins:
 
-        return filename
+        url = f"https://api.coingecko.com/api/v3/coins/{coin}/market_chart"
+        params = {
+            "vs_currency": "cad",
+            "days": last_days,
+            "interval": "daily",
+            "id": coin,
+            "name":coin,
+        }
+
+        response = requests.get(url, params=params)
+
+        if response.status_code != 200:
+            print(f"Failed for {coin}: {response.status_code}")
+            continue
+
+        data = response.json()
+
+        file_path = os.path.join(RAW_FOLDER, f"{coin}_last{last_days}days.json")
+
+        with open(file_path, "w") as f:
+            json.dump(data, f, indent=2)
+
+        print(f"Saved {coin} historical data to {file_path}")
+
+ 
+
+
+ 
     
 
 

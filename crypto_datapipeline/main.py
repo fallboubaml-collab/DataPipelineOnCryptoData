@@ -1,10 +1,10 @@
-from src.ingestion import ingest
-from datetime import datetime
+from src.ingestion import ingest_coins_lastdays
 
 def main():
 
-
-    raw_file = ingest() #fetch n coins
+    coins_list= ['bitcoin','solana']
+    #raw_file = ingest() #fetch n coins
+    rawdaysfile = ingest_coins_lastdays(coins_list,30)
 
 if __name__ == "__main__":
     main()
