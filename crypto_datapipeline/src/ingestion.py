@@ -2,6 +2,7 @@ import requests
 import json
 from datetime import datetime
 import os
+import time
 
 #Make it a function to call it later on main.py it is a demo
 def ingest(top=10):
@@ -66,6 +67,34 @@ def ingest_coins_lastdays(coins: list, last_days: int = 30):
         print(f"Saved {coin} historical data to {file_path}")
 
  
+def ingest_5s():
+    #API gecko
+    url = "https://api.coingecko.com/api/v3/coins/markets"
+    params = {
+    "vs_currency": "cad",
+    "order": "market_cap_desc",
+    "per_page": 10,
+    "page": 1
+    }
+#fetch data 
+    response = requests.get(url,params)
+    data = response.json()
+#take  time in YYYY/MM/DD/H/M/S
+    call5s= datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+
+ # Find project root (parent folder of src/)
+    PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    RAW_FOLDER = os.path.join(PROJECT_ROOT, "data", "raw",'MFC')
+    filename = os.path.join(RAW_FOLDER, f"markets_{call5s}.json")
+
+#create a json file with data from api and save it in data/raw
+    with open(filename, "w") as f:
+        json.dump(data, f, indent=2)
+
+        print(filename)
+        time.sleep(2)
+    return filename
+
 
 
  
