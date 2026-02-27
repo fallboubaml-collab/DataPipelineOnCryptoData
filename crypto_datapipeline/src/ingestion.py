@@ -93,7 +93,7 @@ def ingest_5s():
 
         print(filename)
         time.sleep(2)
-    return filename
+
 
 
 

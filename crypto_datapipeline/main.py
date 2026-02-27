@@ -5,7 +5,8 @@ def main():
 #Step 1:Ingestion of Raw Data
 #using this scheduler to call function every 5 secs
     scheduler = BlockingScheduler()
-    scheduler.add_job(ingest_5s(),trigger='interval',seconds=5)
+    #function not call just reference
+    scheduler.add_job(ingest_5s,trigger='interval',seconds=5)
     scheduler.start()
        
 
